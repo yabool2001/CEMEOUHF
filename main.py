@@ -30,7 +30,6 @@ for child in p.iterdir () :
         print ( data_ael )      
 
 max_elevation = data_ael['Elevation (deg)'].max ()
-
 # Find the row number where the maximum elevation value is located
 max_elevation_row_polmeo1 = data_ael[data_ael['Elevation (deg)'] == max_elevation].index[0]
 
