@@ -8,8 +8,8 @@ for child in p.iterdir () :
     if child.is_file () and child.suffix == '.csv' :
         print ( child )
         df_ael = pd.read_csv ( child , on_bad_lines = 'skip' , delimiter = ',' )
-        device_name = child.stem.split('-')[-1].split('_')[0]
-        df_ael['Satellite'] = device_name
+        df_ael['To satellite'] = child.stem.split('-')[-1].split('_')[0]
+        df_ael['From terminal'] = child.stem.split('-')[1].split('-')[0]
 
         # Convert values, forcing errors to NaN
         df_ael['Time (UTCG)'] = pd.to_datetime ( df_ael['Time (UTCG)'] , errors='coerce' )
