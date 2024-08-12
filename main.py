@@ -27,12 +27,15 @@ for child in p.iterdir () :
 
         # Dodawanie danych z aktualnego pliku do głównego DataFrame
         df = pd.concat ( [df , df_ael] , ignore_index = True )
-        print ( df )      
+        # print ( df )      
 
 max_elevation = df['Elevation (deg)'].max ()
 # Find the row number where the maximum elevation value is located
-max_elevation_row_polmeo1 = df[df['Elevation (deg)'] == max_elevation].index[0]
+max_elevation_row = df[df['Elevation (deg)'] == max_elevation].index[0]
+print ( df.loc[df['Elevation (deg)'] == max_elevation] , 'Time (UTCG)' )
 
-print ( "Maximum Elevation POLMEO1:", max_elevation )
-print ( "Row Number :", max_elevation_row_polmeo1 )
-print ( df.head () )
+#print ( "Maximum Elevation POLMEO1:", max_elevation )
+#print ( "Row Number :", max_elevation_row )
+#print ( df.head () )
+
+#print ( df.loc[df['Elevation (deg)'] == max_elevation ] )
