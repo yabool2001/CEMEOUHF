@@ -2,37 +2,37 @@ import pandas as pd
 from pathlib import Path
 
 p = Path('ael')
-data_ael = pd.DataFrame()  # Inicjalizacja głównego DataFrame, który będzie zawierał wszystkie dane
+df = pd.DataFrame()  # Inicjalizacja głównego DataFrame, który będzie zawierał wszystkie dane
 
 for child in p.iterdir () :
     if child.is_file () and child.suffix == '.csv' :
         print ( child )
-        data_raw = pd.read_csv ( child , on_bad_lines = 'skip' , delimiter = ',' )
+        df_ael = pd.read_csv ( child , on_bad_lines = 'skip' , delimiter = ',' )
         device_name = child.stem.split('-')[-1].split('_')[0]
-        data_raw['Satellite'] = device_name
+        df_ael['Satellite'] = device_name
 
         # Convert values, forcing errors to NaN
-        data_raw['Time (UTCG)'] = pd.to_datetime ( data_raw['Time (UTCG)'] , errors='coerce' )
-        data_raw['Azimuth (deg)'] = pd.to_numeric ( data_raw['Azimuth (deg)'] , errors='coerce' )
-        data_raw['Elevation (deg)'] = pd.to_numeric ( data_raw['Elevation (deg)'] , errors='coerce' )
-        data_raw['Range (lm)'] = pd.to_numeric ( data_raw['Range (km)'] , errors='coerce' )
+        df_ael['Time (UTCG)'] = pd.to_datetime ( df_ael['Time (UTCG)'] , errors='coerce' )
+        df_ael['Azimuth (deg)'] = pd.to_numeric ( df_ael['Azimuth (deg)'] , errors='coerce' )
+        df_ael['Elevation (deg)'] = pd.to_numeric ( df_ael['Elevation (deg)'] , errors='coerce' )
+        df_ael['Range (lm)'] = pd.to_numeric ( df_ael['Range (km)'] , errors='coerce' )
 
         # Drop rows where value is NaN
-        #data_raw = data_raw.dropna ( subset = ['Time (UTCG)'] )
-        #data_raw = data_raw.dropna ( subset = ['Azimuth (deg)'] )
-        #data_raw = data_raw.dropna ( subset = ['Elevation (deg)'] )
-        #data_raw = data_raw.dropna ( subset = ['Range (km)'] )
+        #df_ael = df_ael.dropna ( subset = ['Time (UTCG)'] )
+        #df_ael = df_ael.dropna ( subset = ['Azimuth (deg)'] )
+        #df_ael = df_ael.dropna ( subset = ['Elevation (deg)'] )
+        #df_ael = df_ael.dropna ( subset = ['Range (km)'] )
         # Usuwanie wierszy z wartościami NaN w interesujących nas kolumnach
-        data_raw.dropna ( subset = ['Time (UTCG)' , 'Azimuth (deg)' , 'Elevation (deg)' , 'Range (km)'] , inplace = True )
+        df_ael.dropna ( subset = ['Time (UTCG)' , 'Azimuth (deg)' , 'Elevation (deg)' , 'Range (km)'] , inplace = True )
 
         # Dodawanie danych z aktualnego pliku do głównego DataFrame
-        data_ael = pd.concat ( [data_ael , data_raw] , ignore_index = True )
-        print ( data_ael )      
+        df = pd.concat ( [df , df_ael] , ignore_index = True )
+        print ( df )      
 
-max_elevation = data_ael['Elevation (deg)'].max ()
+max_elevation = df['Elevation (deg)'].max ()
 # Find the row number where the maximum elevation value is located
-max_elevation_row_polmeo1 = data_ael[data_ael['Elevation (deg)'] == max_elevation].index[0]
+max_elevation_row_polmeo1 = df[df['Elevation (deg)'] == max_elevation].index[0]
 
 print ( "Maximum Elevation POLMEO1:", max_elevation )
 print ( "Row Number :", max_elevation_row_polmeo1 )
-print (data_ael.head () )
+print ( df.head () )
