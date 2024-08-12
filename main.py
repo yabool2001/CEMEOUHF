@@ -39,3 +39,5 @@ print ( df.loc[df['Elevation (deg)'] == max_elevation] , 'Time (UTCG)' )
 #print ( df.head () )
 
 #print ( df.loc[df['Elevation (deg)'] == max_elevation ] )
+
+print ( df.sort_values ( by = 'Elevation (deg)') , ascending = False )
