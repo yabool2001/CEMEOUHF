@@ -15,7 +15,7 @@ for child in p.iterdir () :
         df_ael['Time (UTCG)'] = pd.to_datetime ( df_ael['Time (UTCG)'] , errors='coerce' )
         df_ael['Azimuth (deg)'] = pd.to_numeric ( df_ael['Azimuth (deg)'] , errors='coerce' )
         df_ael['Elevation (deg)'] = pd.to_numeric ( df_ael['Elevation (deg)'] , errors='coerce' )
-        df_ael['Range (lm)'] = pd.to_numeric ( df_ael['Range (km)'] , errors='coerce' )
+        df_ael['Range (km)'] = pd.to_numeric ( df_ael['Range (km)'] , errors='coerce' )
 
         # Drop rows where value is NaN
         #df_ael = df_ael.dropna ( subset = ['Time (UTCG)'] )
@@ -40,4 +40,9 @@ print ( df.loc[df['Elevation (deg)'] == max_elevation] , 'Time (UTCG)' )
 
 #print ( df.loc[df['Elevation (deg)'] == max_elevation ] )
 
-print ( df.sort_values ( by = 'Elevation (deg)' , ascending = False ) )
+# print ( df.sort_values ( by = 'Elevation (deg)' , ascending = False ) )
+
+df_filtered = df[ df.groupby ( 'Time (UTCG)' )[ 'Time (UTCG)' ].transform ( 'size' ) > 1 ]
+print ( df_filtered )
+print ( df )
+df.to_csv('ael/df.csv', index = False )
